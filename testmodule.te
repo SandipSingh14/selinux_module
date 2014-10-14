@@ -1,0 +1,30 @@
+
+module testmodule 1.0;
+
+require {
+	type user_devpts_t;
+	type urandom_device_t;
+	type znc_t;
+	type random_device_t;
+	type znc_exec_t;
+	class file read;
+	class chr_file { read write ioctl getattr };
+}
+
+#============= znc_t ==============
+
+#!!!! This avc is allowed in the current policy
+allow znc_t random_device_t:chr_file read;
+
+#!!!! This avc can be allowed using one of the these booleans:
+#     authlogin_nsswitch_use_ldap, global_ssp
+allow znc_t urandom_device_t:chr_file getattr;
+
+#!!!! This avc is allowed in the current policy
+allow znc_t urandom_device_t:chr_file read;
+
+#!!!! This avc is allowed in the current policy
+allow znc_t user_devpts_t:chr_file { read write ioctl getattr };
+
+#!!!! This avc is allowed in the current policy
+allow znc_t znc_exec_t:file read;
