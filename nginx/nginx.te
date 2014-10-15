@@ -1,3 +1,13 @@
+# We just add three type of policies (nginx_t, nginx_exec_t, nginx_home_t) initially in nginx, rest will audit as per requirements.
+# For nginx_t domain policy, see httpd_t domain policy, rest will be added as attributes. (seinfo -xthttpd_t)
+# For nginx_exec_t policy, see httpd_exec_t policy, rest will be added as attributes. (seinfo -xthttpd_exec_t)
+# For nginx_log_t policy, see httpd_log_t policy, rest will be added as attributes. (seinfo -xthttpd_log_t)
+# To add attribute, call require {}.
+# Allow nginx_t domain to access unconfined_r
+
+
+# TE & Role declaration (*.te)
+	
 module nginx 1.0;
 # Declaration
 require {
