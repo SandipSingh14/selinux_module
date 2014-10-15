@@ -1,1 +1,50 @@
-Policy module for nginx daemon
+## Policy module for nginx daemon
+
+
+# Install nginx
+yum install -y nginx
+
+# Query the installed path
+rpm -ql nginx	
+	
+# Create policy dir
+mkdir selinux_module
+cd selinux_module
+
+# Clone the repo
+git clone http://gitrep.stackexpress.com/sandip.singh/selinux_module
+
+# Change dir
+cd nginx
+
+#### Load policy configuration (nginx.te) & write binary representation in (nginx.mod) 
+
+checkmodule -M -m -o nginx.mod nginx.te
+
+### Generate policy file 
+
+semodule_package -o nginx.pp -m nginx.mod -f nginx.fc
+
+### Install policy
+
+semodule -i nginx.pp
+
+@@@@@@@@@@@@@@@ if get error of Multiple different specifications of files #########
+# You can remove the conflict by using semange
+
+semanage fcontext -d '/var/log/nginx(/.*)?'
+semanage fcontext -d '/usr/sbin/nginx'
+
+semanage fcontext -a -t nginx_log_t '/var/log/\nginx(/.*)?'
+semanage fcontext -a -t nginx_exec_t '/usr/sbin/nginx'
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+
+### Check the context 
+matchpathcon /usr/bin/nginx
+
+
+
+
+
