@@ -1,0 +1,66 @@
+policy_module(lighttpd, 1.0.0)
+
+########################################
+#
+# Declarations
+#
+
+attribute_role lighttpd_roles;
+roleattribute system_r lighttpd_roles;
+
+type lighttpd_t;
+type lighttpd_exec_t;
+application_domain(lighttpd_t, lighttpd_exec_t)
+role lighttpd_roles types lighttpd_t;
+
+permissive lighttpd_t;
+
+type lighttpd_log_t;
+logging_log_file(lighttpd_log_t)
+
+type lighttpd_var_run_t;
+files_pid_file(lighttpd_var_run_t)
+
+type lighttpd_unit_file_t;
+systemd_unit_file(lighttpd_unit_file_t)
+
+########################################
+#
+# lighttpd local policy
+#
+allow lighttpd_t self:capability { setgid setuid sys_chroot };
+allow lighttpd_t self:process { fork setrlimit signal_perms };
+
+allow lighttpd_t self:fifo_file manage_fifo_file_perms;
+allow lighttpd_t self:unix_stream_socket create_stream_socket_perms;
+
+manage_dirs_pattern(lighttpd_t, lighttpd_log_t, lighttpd_log_t)
+manage_files_pattern(lighttpd_t, lighttpd_log_t, lighttpd_log_t)
+manage_lnk_files_pattern(lighttpd_t, lighttpd_log_t, lighttpd_log_t)
+logging_log_filetrans(lighttpd_t, lighttpd_log_t, { dir file lnk_file })
+
+manage_dirs_pattern(lighttpd_t, lighttpd_var_run_t, lighttpd_var_run_t)
+manage_files_pattern(lighttpd_t, lighttpd_var_run_t, lighttpd_var_run_t)
+manage_lnk_files_pattern(lighttpd_t, lighttpd_var_run_t, lighttpd_var_run_t)
+files_pid_filetrans(lighttpd_t, lighttpd_var_run_t, { dir file lnk_file })
+
+domain_use_interactive_fds(lighttpd_t)
+
+files_read_etc_files(lighttpd_t)
+
+auth_use_nsswitch(lighttpd_t)
+
+logging_send_syslog_msg(lighttpd_t)
+
+miscfiles_read_localization(lighttpd_t)
+
+sysnet_dns_name_resolve(lighttpd_t)
+
+optional_policy(`
+	gen_require(`
+		type unconfined_t;
+		role unconfined_r;
+	')
+
+	lighttpd_run(unconfined_t, unconfined_r)
+')

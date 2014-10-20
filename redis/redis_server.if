@@ -1,0 +1,306 @@
+
+## <summary>policy for redis_server</summary>
+
+########################################
+## <summary>
+##	Execute TEMPLATE in the redis_server domin.
+## </summary>
+## <param name="domain">
+## <summary>
+##	Domain allowed to transition.
+## </summary>
+## </param>
+#
+interface(`redis_server_domtrans',`
+	gen_require(`
+		type redis_server_t, redis_server_exec_t;
+	')
+
+	corecmd_search_bin($1)
+	domtrans_pattern($1, redis_server_exec_t, redis_server_t)
+')
+########################################
+## <summary>
+##	Read redis_server's log files.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+## <rolecap/>
+#
+interface(`redis_server_read_log',`
+	gen_require(`
+		type redis_server_log_t;
+	')
+
+	logging_search_logs($1)
+	read_files_pattern($1, redis_server_log_t, redis_server_log_t)
+')
+
+########################################
+## <summary>
+##	Append to redis_server log files.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`redis_server_append_log',`
+	gen_require(`
+		type redis_server_log_t;
+	')
+
+	logging_search_logs($1)
+	append_files_pattern($1, redis_server_log_t, redis_server_log_t)
+')
+
+########################################
+## <summary>
+##	Manage redis_server log files
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`redis_server_manage_log',`
+	gen_require(`
+		type redis_server_log_t;
+	')
+
+	logging_search_logs($1)
+	manage_dirs_pattern($1, redis_server_log_t, redis_server_log_t)
+	manage_files_pattern($1, redis_server_log_t, redis_server_log_t)
+	manage_lnk_files_pattern($1, redis_server_log_t, redis_server_log_t)
+')
+
+########################################
+## <summary>
+##	Search redis_server lib directories.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`redis_server_search_lib',`
+	gen_require(`
+		type redis_server_var_lib_t;
+	')
+
+	allow $1 redis_server_var_lib_t:dir search_dir_perms;
+	files_search_var_lib($1)
+')
+
+########################################
+## <summary>
+##	Read redis_server lib files.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`redis_server_read_lib_files',`
+	gen_require(`
+		type redis_server_var_lib_t;
+	')
+
+	files_search_var_lib($1)
+	read_files_pattern($1, redis_server_var_lib_t, redis_server_var_lib_t)
+')
+
+########################################
+## <summary>
+##	Manage redis_server lib files.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`redis_server_manage_lib_files',`
+	gen_require(`
+		type redis_server_var_lib_t;
+	')
+
+	files_search_var_lib($1)
+	manage_files_pattern($1, redis_server_var_lib_t, redis_server_var_lib_t)
+')
+
+########################################
+## <summary>
+##	Manage redis_server lib directories.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`redis_server_manage_lib_dirs',`
+	gen_require(`
+		type redis_server_var_lib_t;
+	')
+
+	files_search_var_lib($1)
+	manage_dirs_pattern($1, redis_server_var_lib_t, redis_server_var_lib_t)
+')
+
+########################################
+## <summary>
+##	Read redis_server PID files.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`redis_server_read_pid_files',`
+	gen_require(`
+		type redis_server_var_run_t;
+	')
+
+	files_search_pids($1)
+	read_files_pattern($1, redis_server_var_run_t, redis_server_var_run_t)
+')
+
+########################################
+## <summary>
+##	Execute redis_server server in the redis_server domain.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed to transition.
+##	</summary>
+## </param>
+#
+interface(`redis_server_systemctl',`
+	gen_require(`
+		type redis_server_t;
+		type redis_server_unit_file_t;
+	')
+
+	systemd_exec_systemctl($1)
+        systemd_read_fifo_file_passwd_run($1)
+	allow $1 redis_server_unit_file_t:file read_file_perms;
+	allow $1 redis_server_unit_file_t:service manage_service_perms;
+
+	ps_process_pattern($1, redis_server_t)
+')
+
+
+########################################
+## <summary>
+##	Execute redis_server in the redis_server domain, and
+##	allow the specified role the redis_server domain.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed to transition
+##	</summary>
+## </param>
+## <param name="role">
+##	<summary>
+##	The role to be allowed the redis_server domain.
+##	</summary>
+## </param>
+#
+interface(`redis_server_run',`
+	gen_require(`
+		type redis_server_t;
+		attribute_role redis_server_roles;
+	')
+
+	redis_server_domtrans($1)
+	roleattribute $2 redis_server_roles;
+')
+
+########################################
+## <summary>
+##	Role access for redis_server
+## </summary>
+## <param name="role">
+##	<summary>
+##	Role allowed access
+##	</summary>
+## </param>
+## <param name="domain">
+##	<summary>
+##	User domain for the role
+##	</summary>
+## </param>
+#
+interface(`redis_server_role',`
+	gen_require(`
+		type redis_server_t;
+		attribute_role redis_server_roles;
+	')
+
+	roleattribute $1 redis_server_roles;
+
+	redis_server_domtrans($2)
+
+	ps_process_pattern($2, redis_server_t)
+	allow $2 redis_server_t:process { signull signal sigkill };
+')
+
+########################################
+## <summary>
+##	All of the rules required to administrate
+##	an redis_server environment
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+## <param name="role">
+##	<summary>
+##	Role allowed access.
+##	</summary>
+## </param>
+## <rolecap/>
+#
+interface(`redis_server_admin',`
+	gen_require(`
+		type redis_server_t;
+		type redis_server_log_t;
+		type redis_server_var_lib_t;
+		type redis_server_var_run_t;
+	type redis_server_unit_file_t;
+	')
+
+	allow $1 redis_server_t:process { signal_perms };
+	ps_process_pattern($1, redis_server_t)
+
+    tunable_policy(`deny_ptrace',`',`
+        allow $1 redis_server_t:process ptrace;
+    ')
+
+	logging_search_logs($1)
+	admin_pattern($1, redis_server_log_t)
+
+	files_search_var_lib($1)
+	admin_pattern($1, redis_server_var_lib_t)
+
+	files_search_pids($1)
+	admin_pattern($1, redis_server_var_run_t)
+
+	redis_server_systemctl($1)
+	admin_pattern($1, redis_server_unit_file_t)
+	allow $1 redis_server_unit_file_t:service all_service_perms;
+	optional_policy(`
+		systemd_passwd_agent_exec($1)
+		systemd_read_fifo_file_passwd_run($1)
+	')
+')
