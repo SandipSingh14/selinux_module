@@ -1,4 +1,4 @@
-policy_module(exim, 1.0.1)
+policy_module(exim, 1.0.2)
 
 #########################
 #	Declaration	#
@@ -22,7 +22,7 @@ application_domain(exim_t, exim_exec_t)
 role exim_roles types exim_t;
 
 # Rum in Permissive mode
-permissive exim_t;
+#permissive exim_t;
 
 # Log type
 type exim_log_t;
