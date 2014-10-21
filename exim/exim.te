@@ -1,0 +1,46 @@
+policy_module(exim, 1.0.0)
+
+#########################
+#	Declaration	#
+#			#
+#			#
+
+# Define Role
+attribute_role	exim_roles;
+
+# Assign Role
+roleattribute	system_r exim_roles;
+
+# Define Type
+type exim_t;
+type exim_exec_t;
+
+# Map application_domain with type
+application_domain(exim_t, exim_exec_t)
+
+# Assign role with type
+role exim_roles types exim_t;
+
+# Rum in Permissive mode
+permissive exim_t;
+
+# Log type
+type exim_log_t;
+
+# Systemd type
+type exim_unit_file_t;
+
+
+optional_policy(`
+        gen_require(`
+                type unconfined_t;
+                role unconfined_r;
+        ')
+
+        exim_run(unconfined_t, unconfined_r)
+')
+
+
+
+
+
