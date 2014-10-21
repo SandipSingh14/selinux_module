@@ -981,7 +981,7 @@
 #line 1
 	
 #line 1
-		module exim 1.0.1;
+		module exim 1.0.2;
 #line 1
 
 #line 1
@@ -3559,7 +3559,7 @@ type exim_exec_t;
 role exim_roles types exim_t;
 
 # Rum in Permissive mode
-permissive exim_t;
+#permissive exim_t;
 
 # Log type
 type exim_log_t;
