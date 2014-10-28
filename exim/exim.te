@@ -1,4 +1,4 @@
-policy_module(exim, 1.0.2)
+policy_module(exim, 1.0.3)
 
 #########################
 #	Declaration	#
@@ -31,7 +31,9 @@ logging_log_file(exim_log_t)
 # Systemd type
 type exim_unit_file_t;
 systemd_unit_file(exim_unit_file_t)
-
+# Port type
+type exim_port_t;
+corenet_port(exim_port_t)
 
 ########################################
 ##
@@ -44,8 +46,9 @@ allow exim_t self:capability { setgid setuid sys_chroot };
 allow exim_t self:process { fork setrlimit signal_perms };
 
 allow exim_t self:fifo_file manage_fifo_file_perms;
-allow exim_t self:unix_stream_socket create_stream_socket_perms;
+#allow exim_t self:unix_stream_socket create_stream_socket_perms;
 
+allow exim_t exim_port_t:tcp_socket name_connect;
 
 domain_use_interactive_fds(exim_t)
 

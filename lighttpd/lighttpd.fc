@@ -1,7 +1,0 @@
-/usr/lib/systemd/system/lighttpd.service		--	gen_context(system_u:object_r:lighttpd_unit_file_t,s0)
-
-/usr/sbin/lighttpd		--	gen_context(system_u:object_r:lighttpd_exec_t,s0)
-
-/var/log/lighttpd(/.*)?		gen_context(system_u:object_r:lighttpd_log_t,s0)
-
-/var/run/lighttpd(/.*)?		gen_context(system_u:object_r:lighttpd_var_run_t,s0)
