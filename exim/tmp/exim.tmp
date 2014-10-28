@@ -981,7 +981,7 @@
 #line 1
 	
 #line 1
-		module exim 1.0.2;
+		module exim 1.0.3;
 #line 1
 
 #line 1
@@ -3781,6 +3781,42 @@ type exim_unit_file_t;
 #line 33
  	
 
+type exim_port_t;
+ 	 	
+#line 36
+##### begin corenet_port(exim_port_t) depth: 1
+#line 36
+ 	
+#line 36
+	
+#line 36
+	
+#line 36
+		require {
+#line 36
+			
+#line 36
+		attribute port_type;
+#line 36
+	
+#line 36
+		} # end require
+#line 36
+	
+#line 36
+
+#line 36
+
+#line 36
+	typeattribute exim_port_t port_type;
+#line 36
+
+#line 36
+	 	
+#line 36
+##### end corenet_port(exim_port_t) depth: 0
+#line 36
+ 	
 
 ########################################
 ##
@@ -3793,1778 +3829,1779 @@ allow exim_t self:capability { setgid setuid sys_chroot };
 allow exim_t self:process { fork setrlimit { sigchld sigkill sigstop signull signal } };
 
 allow exim_t self:fifo_file { create open getattr setattr read write append rename link unlink ioctl lock };
-allow exim_t self:unix_stream_socket { { create { ioctl read getattr lock write setattr append bind connect getopt setopt shutdown } } listen accept };
+#allow exim_t self:unix_stream_socket create_stream_socket_perms;
 
+allow exim_t exim_port_t:tcp_socket name_connect;
 
  	 	
-#line 50
+#line 53
 ##### begin domain_use_interactive_fds(exim_t) depth: 1
-#line 50
+#line 53
  	
-#line 50
+#line 53
 	
-#line 50
+#line 53
 	
-#line 50
+#line 53
 		require {
-#line 50
+#line 53
 			
-#line 50
+#line 53
 		attribute privfd;
-#line 50
+#line 53
 	
-#line 50
+#line 53
 		} # end require
-#line 50
+#line 53
 	
-#line 50
+#line 53
 
-#line 50
+#line 53
 
-#line 50
+#line 53
 	allow exim_t privfd:fd use;
-#line 50
+#line 53
 
-#line 50
+#line 53
 	 	
-#line 50
+#line 53
 ##### end domain_use_interactive_fds(exim_t) depth: 0
-#line 50
+#line 53
  	
 
  	 	
-#line 52
+#line 55
 ##### begin files_read_etc_files(exim_t) depth: 1
-#line 52
+#line 55
  	
-#line 52
+#line 55
 	
-#line 52
+#line 55
 	
-#line 52
+#line 55
 		require {
-#line 52
+#line 55
 			
-#line 52
+#line 55
 		type etc_t;
-#line 52
+#line 55
 	
-#line 52
+#line 55
 		} # end require
-#line 52
+#line 55
 	
-#line 52
+#line 55
 
-#line 52
+#line 55
 
-#line 52
+#line 55
 	allow exim_t etc_t:dir { getattr search open read lock ioctl };
-#line 52
+#line 55
 	
-#line 52
+#line 55
 	allow exim_t etc_t:dir { getattr search open };
-#line 52
+#line 55
 	allow exim_t etc_t:file { open { getattr read ioctl lock } };
-#line 52
+#line 55
 
-#line 52
+#line 55
 	
-#line 52
+#line 55
 	allow exim_t etc_t:dir { getattr search open };
-#line 52
+#line 55
 	allow exim_t etc_t:lnk_file { getattr read };
-#line 52
+#line 55
 
-#line 52
+#line 55
 	 	 	
-#line 52
+#line 55
 ##### begin files_read_etc_runtime_files(exim_t) depth: 2
-#line 52
+#line 55
  	
-#line 52
+#line 55
 	
-#line 52
+#line 55
 	
-#line 52
+#line 55
 		require {
-#line 52
+#line 55
 			
-#line 52
+#line 55
 		type etc_t, etc_runtime_t;
-#line 52
+#line 55
 	
-#line 52
+#line 55
 		} # end require
-#line 52
+#line 55
 	
-#line 52
+#line 55
 
-#line 52
+#line 55
 
-#line 52
+#line 55
 	allow exim_t etc_t:dir { getattr search open read lock ioctl };
-#line 52
+#line 55
 	
-#line 52
+#line 55
 	allow exim_t etc_t:dir { getattr search open };
-#line 52
+#line 55
 	allow exim_t etc_runtime_t:file { open { getattr read ioctl lock } };
-#line 52
+#line 55
 
-#line 52
+#line 55
 	
-#line 52
+#line 55
 	allow exim_t etc_t:dir { getattr search open };
-#line 52
+#line 55
 	allow exim_t etc_runtime_t:lnk_file { getattr read };
-#line 52
+#line 55
 
-#line 52
+#line 55
 
-#line 52
+#line 55
 	 	
-#line 52
+#line 55
 ##### end files_read_etc_runtime_files(exim_t) depth: 1
-#line 52
+#line 55
  	
-#line 52
+#line 55
 
-#line 52
+#line 55
 	 	
-#line 52
+#line 55
 ##### end files_read_etc_files(exim_t) depth: 0
-#line 52
+#line 55
  	
 
  	 	
-#line 54
+#line 57
 ##### begin auth_use_nsswitch(exim_t) depth: 1
-#line 54
+#line 57
  	
-#line 54
+#line 57
 	
-#line 54
+#line 57
 	
-#line 54
+#line 57
 		require {
-#line 54
+#line 57
 			
-#line 54
+#line 57
 		attribute nsswitch_domain;
-#line 54
+#line 57
 	
-#line 54
+#line 57
 		} # end require
-#line 54
+#line 57
 	
-#line 54
+#line 57
 
-#line 54
+#line 57
 
-#line 54
+#line 57
 	typeattribute exim_t nsswitch_domain;
-#line 54
+#line 57
 
-#line 54
+#line 57
 	 	 	
-#line 54
+#line 57
 ##### begin corenet_all_recvfrom_netlabel(exim_t) depth: 2
-#line 54
+#line 57
  	
-#line 54
+#line 57
 	
-#line 54
+#line 57
 	
-#line 54
+#line 57
 		require {
-#line 54
+#line 57
 			
-#line 54
+#line 57
 		attribute netlabel_peer_type;
-#line 54
+#line 57
 	
-#line 54
+#line 57
 		} # end require
-#line 54
+#line 57
 	
-#line 54
+#line 57
 
-#line 54
+#line 57
 
-#line 54
+#line 57
 	typeattribute exim_t netlabel_peer_type;
-#line 54
+#line 57
 
-#line 54
+#line 57
 	 	
-#line 54
+#line 57
 ##### end corenet_all_recvfrom_netlabel(exim_t) depth: 1
-#line 54
+#line 57
  	
-#line 54
+#line 57
 
-#line 54
+#line 57
     
-#line 54
+#line 57
 	optional {
-#line 54
+#line 57
 		
-#line 54
+#line 57
          	 	
-#line 54
+#line 57
 ##### begin kerberos_keytab_domains(exim_t) depth: 2
-#line 54
+#line 57
  	
-#line 54
+#line 57
     
-#line 54
+#line 57
 	
-#line 54
+#line 57
 		require {
-#line 54
+#line 57
 			
-#line 54
+#line 57
         attribute kerberos_keytab_domain;
-#line 54
+#line 57
     
-#line 54
+#line 57
 		} # end require
-#line 54
+#line 57
 	
-#line 54
+#line 57
 
-#line 54
+#line 57
 
-#line 54
+#line 57
     typeattribute exim_t kerberos_keytab_domain;
-#line 54
+#line 57
 
-#line 54
+#line 57
 	 	
-#line 54
+#line 57
 ##### end kerberos_keytab_domains(exim_t) depth: 1
-#line 54
+#line 57
  	
-#line 54
+#line 57
     
-#line 54
+#line 57
 	} # end optional
-#line 54
+#line 57
 
-#line 54
+#line 57
 
-#line 54
+#line 57
 	 	
-#line 54
+#line 57
 ##### end auth_use_nsswitch(exim_t) depth: 0
-#line 54
+#line 57
  	
 
  	 	
-#line 56
+#line 59
 ##### begin logging_send_syslog_msg(exim_t) depth: 1
-#line 56
+#line 59
  	
-#line 56
+#line 59
 	
-#line 56
+#line 59
 	
-#line 56
+#line 59
 		require {
-#line 56
+#line 59
 			
-#line 56
+#line 59
 		attribute syslog_client_type;
-#line 56
+#line 59
 	
-#line 56
+#line 59
 		} # end require
-#line 56
+#line 59
 	
-#line 56
+#line 59
 
-#line 56
+#line 59
 
-#line 56
+#line 59
 	typeattribute exim_t syslog_client_type;
-#line 56
+#line 59
 
-#line 56
+#line 59
 	 	
-#line 56
+#line 59
 ##### end logging_send_syslog_msg(exim_t) depth: 0
-#line 56
+#line 59
  	
 
  	 	
-#line 58
+#line 61
 ##### begin miscfiles_read_localization(exim_t) depth: 1
-#line 58
+#line 61
  	
-#line 58
+#line 61
 	
-#line 58
+#line 61
 	
-#line 58
+#line 61
 		require {
-#line 58
+#line 61
 			
-#line 58
+#line 61
 		type locale_t;
-#line 58
+#line 61
 	
-#line 58
+#line 61
 		} # end require
-#line 58
+#line 61
 	
-#line 58
+#line 61
 
-#line 58
+#line 61
 
-#line 58
+#line 61
 	 	 	
-#line 58
+#line 61
 ##### begin files_read_etc_symlinks(exim_t) depth: 2
-#line 58
+#line 61
  	
-#line 58
+#line 61
 	
-#line 58
+#line 61
 	
-#line 58
+#line 61
 		require {
-#line 58
+#line 61
 			
-#line 58
+#line 61
 		type etc_t;
-#line 58
+#line 61
 	
-#line 58
+#line 61
 		} # end require
-#line 58
+#line 61
 	
-#line 58
+#line 61
 
-#line 58
+#line 61
 
-#line 58
+#line 61
 	
-#line 58
+#line 61
 	allow exim_t etc_t:dir { getattr search open };
-#line 58
+#line 61
 	allow exim_t etc_t:lnk_file { getattr read };
-#line 58
+#line 61
 
-#line 58
+#line 61
 
-#line 58
+#line 61
 	 	
-#line 58
+#line 61
 ##### end files_read_etc_symlinks(exim_t) depth: 1
-#line 58
+#line 61
  	
-#line 58
+#line 61
 	 	 	
-#line 58
+#line 61
 ##### begin files_search_usr(exim_t) depth: 2
-#line 58
+#line 61
  	
-#line 58
+#line 61
 	
-#line 58
+#line 61
 	
-#line 58
+#line 61
 		require {
-#line 58
+#line 61
 			
-#line 58
+#line 61
 		type usr_t;
-#line 58
+#line 61
 	
-#line 58
+#line 61
 		} # end require
-#line 58
+#line 61
 	
-#line 58
+#line 61
 
-#line 58
+#line 61
 
-#line 58
+#line 61
 	allow exim_t usr_t:dir { getattr search open };
-#line 58
+#line 61
 
-#line 58
+#line 61
 	 	
-#line 58
+#line 61
 ##### end files_search_usr(exim_t) depth: 1
-#line 58
+#line 61
  	
-#line 58
+#line 61
 	allow exim_t locale_t:dir { getattr search open read lock ioctl };
-#line 58
+#line 61
 	
-#line 58
+#line 61
 	allow exim_t locale_t:dir { getattr search open };
-#line 58
+#line 61
 	allow exim_t locale_t:file { open { getattr read ioctl lock } };
-#line 58
+#line 61
 
-#line 58
+#line 61
 	
-#line 58
+#line 61
 	allow exim_t locale_t:dir { getattr search open };
-#line 58
+#line 61
 	allow exim_t locale_t:lnk_file { getattr read };
-#line 58
+#line 61
 
-#line 58
+#line 61
 
-#line 58
+#line 61
 	 	
-#line 58
+#line 61
 ##### end miscfiles_read_localization(exim_t) depth: 0
-#line 58
+#line 61
  	
 
  	 	
-#line 60
+#line 63
 ##### begin sysnet_dns_name_resolve(exim_t) depth: 1
-#line 60
+#line 63
  	
-#line 60
+#line 63
 	
-#line 60
+#line 63
 	
-#line 60
+#line 63
 		require {
-#line 60
+#line 63
 			
-#line 60
+#line 63
 		type net_conf_t;
-#line 60
+#line 63
 	
-#line 60
+#line 63
 		} # end require
-#line 60
+#line 63
 	
-#line 60
+#line 63
 
-#line 60
+#line 63
 
-#line 60
+#line 63
 	allow exim_t self:tcp_socket { create { ioctl read getattr lock write setattr append bind connect getopt setopt shutdown } };
-#line 60
+#line 63
 	allow exim_t self:udp_socket { create { ioctl read getattr lock write setattr append bind connect getopt setopt shutdown } };
-#line 60
+#line 63
 	allow exim_t self:netlink_route_socket { { create { ioctl read getattr lock write setattr append bind connect getopt setopt shutdown } } nlmsg_read };
-#line 60
+#line 63
 
-#line 60
+#line 63
 	 	 	
-#line 60
+#line 63
 ##### begin corenet_tcp_sendrecv_generic_if(exim_t) depth: 2
-#line 60
+#line 63
  	
-#line 60
+#line 63
 	
-#line 60
+#line 63
 	
-#line 60
+#line 63
 		require {
-#line 60
+#line 63
 			
-#line 60
+#line 63
 		type netif_t;
-#line 60
+#line 63
 	
-#line 60
+#line 63
 		} # end require
-#line 60
+#line 63
 	
-#line 60
+#line 63
 
-#line 60
+#line 63
 
-#line 60
+#line 63
 	allow exim_t netif_t:netif { tcp_send tcp_recv egress ingress };
-#line 60
+#line 63
 
-#line 60
+#line 63
 	 	
-#line 60
+#line 63
 ##### end corenet_tcp_sendrecv_generic_if(exim_t) depth: 1
-#line 60
+#line 63
  	
-#line 60
+#line 63
 	 	 	
-#line 60
+#line 63
 ##### begin corenet_udp_sendrecv_generic_if(exim_t) depth: 2
-#line 60
+#line 63
  	
-#line 60
+#line 63
 	 	 	
-#line 60
+#line 63
 ##### begin corenet_udp_send_generic_if(exim_t) depth: 3
-#line 60
+#line 63
  	
-#line 60
+#line 63
 	
-#line 60
+#line 63
 	
-#line 60
+#line 63
 		require {
-#line 60
+#line 63
 			
-#line 60
+#line 63
 		type netif_t;
-#line 60
+#line 63
 	
-#line 60
+#line 63
 		} # end require
-#line 60
+#line 63
 	
-#line 60
+#line 63
 
-#line 60
+#line 63
 
-#line 60
+#line 63
 	allow exim_t netif_t:netif { udp_send egress };
-#line 60
+#line 63
 
-#line 60
+#line 63
 	 	
-#line 60
+#line 63
 ##### end corenet_udp_send_generic_if(exim_t) depth: 2
-#line 60
+#line 63
  	
-#line 60
+#line 63
 	 	 	
-#line 60
+#line 63
 ##### begin corenet_udp_receive_generic_if(exim_t) depth: 3
-#line 60
+#line 63
  	
-#line 60
+#line 63
 	
-#line 60
+#line 63
 	
-#line 60
+#line 63
 		require {
-#line 60
+#line 63
 			
-#line 60
+#line 63
 		type netif_t;
-#line 60
+#line 63
 	
-#line 60
+#line 63
 		} # end require
-#line 60
+#line 63
 	
-#line 60
+#line 63
 
-#line 60
+#line 63
 
-#line 60
+#line 63
 	allow exim_t netif_t:netif { udp_recv ingress };
-#line 60
+#line 63
 
-#line 60
+#line 63
 	 	
-#line 60
+#line 63
 ##### end corenet_udp_receive_generic_if(exim_t) depth: 2
-#line 60
+#line 63
  	
-#line 60
+#line 63
 
-#line 60
+#line 63
 	 	
-#line 60
+#line 63
 ##### end corenet_udp_sendrecv_generic_if(exim_t) depth: 1
-#line 60
+#line 63
  	
-#line 60
+#line 63
 	 	 	
-#line 60
+#line 63
 ##### begin corenet_tcp_sendrecv_generic_node(exim_t) depth: 2
-#line 60
+#line 63
  	
-#line 60
+#line 63
 	
-#line 60
+#line 63
 	
-#line 60
+#line 63
 		require {
-#line 60
+#line 63
 			
-#line 60
+#line 63
 		type node_t;
-#line 60
+#line 63
 	
-#line 60
+#line 63
 		} # end require
-#line 60
+#line 63
 	
-#line 60
+#line 63
 
-#line 60
+#line 63
 
-#line 60
+#line 63
 	allow exim_t node_t:node { tcp_send tcp_recv sendto recvfrom };
-#line 60
+#line 63
 
-#line 60
+#line 63
 	 	
-#line 60
+#line 63
 ##### end corenet_tcp_sendrecv_generic_node(exim_t) depth: 1
-#line 60
+#line 63
  	
-#line 60
+#line 63
 	 	 	
-#line 60
+#line 63
 ##### begin corenet_udp_sendrecv_generic_node(exim_t) depth: 2
-#line 60
+#line 63
  	
-#line 60
+#line 63
 	 	 	
-#line 60
+#line 63
 ##### begin corenet_udp_send_generic_node(exim_t) depth: 3
-#line 60
+#line 63
  	
-#line 60
+#line 63
 	
-#line 60
+#line 63
 	
-#line 60
+#line 63
 		require {
-#line 60
+#line 63
 			
-#line 60
+#line 63
 		type node_t;
-#line 60
+#line 63
 	
-#line 60
+#line 63
 		} # end require
-#line 60
+#line 63
 	
-#line 60
+#line 63
 
-#line 60
+#line 63
 
-#line 60
+#line 63
 	allow exim_t node_t:node { udp_send sendto };
-#line 60
+#line 63
 
-#line 60
+#line 63
 	 	
-#line 60
+#line 63
 ##### end corenet_udp_send_generic_node(exim_t) depth: 2
-#line 60
+#line 63
  	
-#line 60
+#line 63
 	 	 	
-#line 60
+#line 63
 ##### begin corenet_udp_receive_generic_node(exim_t) depth: 3
-#line 60
+#line 63
  	
-#line 60
+#line 63
 	
-#line 60
+#line 63
 	
-#line 60
+#line 63
 		require {
-#line 60
+#line 63
 			
-#line 60
+#line 63
 		type node_t;
-#line 60
+#line 63
 	
-#line 60
+#line 63
 		} # end require
-#line 60
+#line 63
 	
-#line 60
+#line 63
 
-#line 60
+#line 63
 
-#line 60
+#line 63
 	allow exim_t node_t:node { udp_recv recvfrom };
-#line 60
+#line 63
 
-#line 60
+#line 63
 	 	
-#line 60
+#line 63
 ##### end corenet_udp_receive_generic_node(exim_t) depth: 2
-#line 60
+#line 63
  	
-#line 60
+#line 63
 
-#line 60
+#line 63
 	 	
-#line 60
+#line 63
 ##### end corenet_udp_sendrecv_generic_node(exim_t) depth: 1
-#line 60
+#line 63
  	
-#line 60
+#line 63
 	 	 	
-#line 60
+#line 63
 ##### begin corenet_tcp_sendrecv_dns_port(exim_t) depth: 2
-#line 60
+#line 63
  	
-#line 60
+#line 63
 	
-#line 60
+#line 63
 	
-#line 60
+#line 63
 		require {
-#line 60
+#line 63
 			
-#line 60
+#line 63
 		type dns_port_t;
-#line 60
+#line 63
 	
-#line 60
+#line 63
 		} # end require
-#line 60
+#line 63
 	
-#line 60
+#line 63
 
-#line 60
+#line 63
 
-#line 60
+#line 63
 	allow exim_t dns_port_t:tcp_socket { send_msg recv_msg };
-#line 60
+#line 63
 
-#line 60
+#line 63
 	 	
-#line 60
+#line 63
 ##### end corenet_tcp_sendrecv_dns_port(exim_t) depth: 1
-#line 60
+#line 63
  	
-#line 60
+#line 63
 	 	 	
-#line 60
+#line 63
 ##### begin corenet_udp_sendrecv_dns_port(exim_t) depth: 2
-#line 60
+#line 63
  	
-#line 60
+#line 63
 	 	 	
-#line 60
+#line 63
 ##### begin corenet_udp_send_dns_port(exim_t) depth: 3
-#line 60
+#line 63
  	
-#line 60
+#line 63
 	
-#line 60
+#line 63
 	
-#line 60
+#line 63
 		require {
-#line 60
+#line 63
 			
-#line 60
+#line 63
 		type dns_port_t;
-#line 60
+#line 63
 	
-#line 60
+#line 63
 		} # end require
-#line 60
+#line 63
 	
-#line 60
+#line 63
 
-#line 60
+#line 63
 
-#line 60
+#line 63
 	allow exim_t dns_port_t:udp_socket send_msg;
-#line 60
+#line 63
 
-#line 60
+#line 63
 	 	
-#line 60
+#line 63
 ##### end corenet_udp_send_dns_port(exim_t) depth: 2
-#line 60
+#line 63
  	
-#line 60
+#line 63
 	 	 	
-#line 60
+#line 63
 ##### begin corenet_udp_receive_dns_port(exim_t) depth: 3
-#line 60
+#line 63
  	
-#line 60
+#line 63
 	
-#line 60
+#line 63
 	
-#line 60
+#line 63
 		require {
-#line 60
+#line 63
 			
-#line 60
+#line 63
 		type dns_port_t;
-#line 60
+#line 63
 	
-#line 60
+#line 63
 		} # end require
-#line 60
+#line 63
 	
-#line 60
+#line 63
 
-#line 60
+#line 63
 
-#line 60
+#line 63
 	allow exim_t dns_port_t:udp_socket recv_msg;
-#line 60
+#line 63
 
-#line 60
+#line 63
 	 	
-#line 60
+#line 63
 ##### end corenet_udp_receive_dns_port(exim_t) depth: 2
-#line 60
+#line 63
  	
-#line 60
+#line 63
 
-#line 60
+#line 63
 	 	
-#line 60
+#line 63
 ##### end corenet_udp_sendrecv_dns_port(exim_t) depth: 1
-#line 60
+#line 63
  	
-#line 60
+#line 63
 	 	 	
-#line 60
+#line 63
 ##### begin corenet_tcp_connect_dns_port(exim_t) depth: 2
-#line 60
+#line 63
  	
-#line 60
+#line 63
 	
-#line 60
+#line 63
 	
-#line 60
+#line 63
 		require {
-#line 60
+#line 63
 			
-#line 60
+#line 63
 		type dns_port_t;
-#line 60
+#line 63
 	
-#line 60
+#line 63
 		} # end require
-#line 60
+#line 63
 	
-#line 60
+#line 63
 
-#line 60
+#line 63
 
-#line 60
+#line 63
 	allow exim_t dns_port_t:tcp_socket name_connect;
-#line 60
+#line 63
 
-#line 60
+#line 63
 	 	
-#line 60
+#line 63
 ##### end corenet_tcp_connect_dns_port(exim_t) depth: 1
-#line 60
+#line 63
  	
-#line 60
+#line 63
      	 	
-#line 60
+#line 63
 ##### begin corenet_tcp_connect_dnssec_port(exim_t) depth: 2
-#line 60
+#line 63
  	
-#line 60
+#line 63
 	
-#line 60
+#line 63
 	
-#line 60
+#line 63
 		require {
-#line 60
+#line 63
 			
-#line 60
+#line 63
 		type dnssec_port_t;
-#line 60
+#line 63
 	
-#line 60
+#line 63
 		} # end require
-#line 60
+#line 63
 	
-#line 60
+#line 63
 
-#line 60
+#line 63
 
-#line 60
+#line 63
 	allow exim_t dnssec_port_t:tcp_socket name_connect;
-#line 60
+#line 63
 
-#line 60
+#line 63
 	 	
-#line 60
+#line 63
 ##### end corenet_tcp_connect_dnssec_port(exim_t) depth: 1
-#line 60
+#line 63
  	
-#line 60
+#line 63
 	 	 	
-#line 60
+#line 63
 ##### begin corenet_sendrecv_dns_client_packets(exim_t) depth: 2
-#line 60
+#line 63
  	
-#line 60
+#line 63
 	 	 	
-#line 60
+#line 63
 ##### begin corenet_send_dns_client_packets(exim_t) depth: 3
-#line 60
+#line 63
  	
-#line 60
+#line 63
 	
-#line 60
+#line 63
 	
-#line 60
+#line 63
 		require {
-#line 60
+#line 63
 			
-#line 60
+#line 63
 		type dns_client_packet_t;
-#line 60
+#line 63
 	
-#line 60
+#line 63
 		} # end require
-#line 60
+#line 63
 	
-#line 60
+#line 63
 
-#line 60
+#line 63
 
-#line 60
+#line 63
 	allow exim_t dns_client_packet_t:packet send;
-#line 60
+#line 63
 
-#line 60
+#line 63
 	 	
-#line 60
+#line 63
 ##### end corenet_send_dns_client_packets(exim_t) depth: 2
-#line 60
+#line 63
  	
-#line 60
+#line 63
 	 	 	
-#line 60
+#line 63
 ##### begin corenet_receive_dns_client_packets(exim_t) depth: 3
-#line 60
+#line 63
  	
-#line 60
+#line 63
 	
-#line 60
+#line 63
 	
-#line 60
+#line 63
 		require {
-#line 60
+#line 63
 			
-#line 60
+#line 63
 		type dns_client_packet_t;
-#line 60
+#line 63
 	
-#line 60
+#line 63
 		} # end require
-#line 60
+#line 63
 	
-#line 60
+#line 63
 
-#line 60
+#line 63
 
-#line 60
+#line 63
 	allow exim_t dns_client_packet_t:packet recv;
-#line 60
+#line 63
 
-#line 60
+#line 63
 	 	
-#line 60
+#line 63
 ##### end corenet_receive_dns_client_packets(exim_t) depth: 2
-#line 60
+#line 63
  	
-#line 60
+#line 63
 
-#line 60
+#line 63
 	 	
-#line 60
+#line 63
 ##### end corenet_sendrecv_dns_client_packets(exim_t) depth: 1
-#line 60
+#line 63
  	
-#line 60
+#line 63
 
-#line 60
+#line 63
 	 	 	
-#line 60
+#line 63
 ##### begin miscfiles_read_generic_certs(exim_t) depth: 2
-#line 60
+#line 63
  	
-#line 60
+#line 63
 	
-#line 60
+#line 63
 	
-#line 60
+#line 63
 		require {
-#line 60
+#line 63
 			
-#line 60
+#line 63
 		type cert_t;
-#line 60
+#line 63
 	
-#line 60
+#line 63
 		} # end require
-#line 60
+#line 63
 	
-#line 60
+#line 63
 
-#line 60
+#line 63
 
-#line 60
+#line 63
 	allow exim_t cert_t:dir { getattr search open read lock ioctl };
-#line 60
+#line 63
 	
-#line 60
+#line 63
 	allow exim_t cert_t:dir { getattr search open };
-#line 60
+#line 63
 	allow exim_t cert_t:file { open { getattr read ioctl lock } };
-#line 60
+#line 63
 
-#line 60
+#line 63
 	
-#line 60
+#line 63
 	allow exim_t cert_t:dir { getattr search open };
-#line 60
+#line 63
 	allow exim_t cert_t:lnk_file { getattr read };
-#line 60
+#line 63
 
-#line 60
+#line 63
 
-#line 60
+#line 63
 	 	
-#line 60
+#line 63
 ##### end miscfiles_read_generic_certs(exim_t) depth: 1
-#line 60
+#line 63
  	
-#line 60
+#line 63
 
-#line 60
+#line 63
 	 	 	
-#line 60
+#line 63
 ##### begin sysnet_read_config(exim_t) depth: 2
-#line 60
+#line 63
  	
-#line 60
+#line 63
 	
-#line 60
+#line 63
 	
-#line 60
+#line 63
 		require {
-#line 60
+#line 63
 			
-#line 60
+#line 63
 		type net_conf_t;
-#line 60
+#line 63
 	
-#line 60
+#line 63
 		} # end require
-#line 60
+#line 63
 	
-#line 60
+#line 63
 
-#line 60
+#line 63
 
-#line 60
+#line 63
 	 	 	
-#line 60
+#line 63
 ##### begin files_search_etc(exim_t) depth: 3
-#line 60
+#line 63
  	
-#line 60
+#line 63
 	
-#line 60
+#line 63
 	
-#line 60
+#line 63
 		require {
-#line 60
+#line 63
 			
-#line 60
+#line 63
 		type etc_t;
-#line 60
+#line 63
 	
-#line 60
+#line 63
 		} # end require
-#line 60
+#line 63
 	
-#line 60
+#line 63
 
-#line 60
+#line 63
 
-#line 60
+#line 63
 	allow exim_t etc_t:dir { getattr search open };
-#line 60
+#line 63
 
-#line 60
+#line 63
 	 	
-#line 60
+#line 63
 ##### end files_search_etc(exim_t) depth: 2
-#line 60
+#line 63
  	
-#line 60
+#line 63
 	allow exim_t net_conf_t:file { open { getattr read ioctl lock } };
-#line 60
+#line 63
 
-#line 60
+#line 63
 	
-#line 60
+#line 63
 		allow exim_t net_conf_t:dir { getattr search open read lock ioctl };
-#line 60
+#line 63
 		allow exim_t net_conf_t:lnk_file { getattr read };
-#line 60
+#line 63
 		
-#line 60
+#line 63
 	allow exim_t net_conf_t:dir { getattr search open };
-#line 60
+#line 63
 	allow exim_t net_conf_t:file { open { getattr read ioctl lock } };
-#line 60
+#line 63
 
-#line 60
+#line 63
 	
-#line 60
+#line 63
 
-#line 60
+#line 63
 	 	
-#line 60
+#line 63
 ##### end sysnet_read_config(exim_t) depth: 1
-#line 60
+#line 63
  	
-#line 60
+#line 63
 
-#line 60
+#line 63
 	
-#line 60
+#line 63
 	optional {
-#line 60
+#line 63
 		
-#line 60
+#line 63
 		 	 	
-#line 60
+#line 63
 ##### begin avahi_stream_connect(exim_t) depth: 2
-#line 60
+#line 63
  	
-#line 60
+#line 63
 	
-#line 60
+#line 63
 	
-#line 60
+#line 63
 		require {
-#line 60
+#line 63
 			
-#line 60
+#line 63
 		type avahi_t, avahi_var_run_t;
-#line 60
+#line 63
 	
-#line 60
+#line 63
 		} # end require
-#line 60
+#line 63
 	
-#line 60
+#line 63
 
-#line 60
+#line 63
 
-#line 60
+#line 63
 	 	 	
-#line 60
+#line 63
 ##### begin files_search_pids(exim_t) depth: 3
-#line 60
+#line 63
  	
-#line 60
+#line 63
 	
-#line 60
+#line 63
 	
-#line 60
+#line 63
 		require {
-#line 60
+#line 63
 			
-#line 60
+#line 63
 		type var_t, var_run_t;
-#line 60
+#line 63
 	
-#line 60
+#line 63
 		} # end require
-#line 60
+#line 63
 	
-#line 60
+#line 63
 
-#line 60
+#line 63
 
-#line 60
+#line 63
 	allow exim_t var_t:lnk_file { getattr read };
-#line 60
+#line 63
 	allow exim_t var_run_t:lnk_file { getattr read };
-#line 60
+#line 63
 	
-#line 60
+#line 63
 	allow exim_t var_t:dir { getattr search open };
-#line 60
+#line 63
 	allow exim_t var_run_t:dir { getattr search open };
-#line 60
+#line 63
 
-#line 60
+#line 63
 
-#line 60
+#line 63
 	 	
-#line 60
+#line 63
 ##### end files_search_pids(exim_t) depth: 2
-#line 60
+#line 63
  	
-#line 60
+#line 63
 	
-#line 60
+#line 63
 	allow exim_t avahi_var_run_t:dir { getattr search open };
-#line 60
+#line 63
 	allow exim_t avahi_var_run_t:sock_file { getattr write open append };
-#line 60
+#line 63
 	allow exim_t avahi_t:unix_stream_socket connectto;
-#line 60
+#line 63
 
-#line 60
+#line 63
 
-#line 60
+#line 63
 	 	
-#line 60
+#line 63
 ##### end avahi_stream_connect(exim_t) depth: 1
-#line 60
+#line 63
  	
-#line 60
+#line 63
 	
-#line 60
+#line 63
 	} # end optional
-#line 60
+#line 63
 
-#line 60
+#line 63
 
-#line 60
+#line 63
 	
-#line 60
+#line 63
 	optional {
-#line 60
+#line 63
 		
-#line 60
+#line 63
 		 	 	
-#line 60
+#line 63
 ##### begin nscd_use(exim_t) depth: 2
-#line 60
+#line 63
  	
-#line 60
+#line 63
 	
-#line 60
+#line 63
 	
-#line 60
+#line 63
 	
-#line 60
+#line 63
 		require {
-#line 60
+#line 63
 			
-#line 60
+#line 63
 		
-#line 60
+#line 63
 bool nscd_use_shm;
-#line 60
+#line 63
 
-#line 60
+#line 63
   
-#line 60
+#line 63
 	
-#line 60
+#line 63
 		} # end require
-#line 60
+#line 63
 	
-#line 60
+#line 63
 
-#line 60
+#line 63
 	if (nscd_use_shm) {
-#line 60
+#line 63
 		
-#line 60
+#line 63
 		 	 	
-#line 60
+#line 63
 ##### begin nscd_shm_use(exim_t) depth: 3
-#line 60
+#line 63
  	
-#line 60
+#line 63
 	
-#line 60
+#line 63
 	
-#line 60
+#line 63
 		require {
-#line 60
+#line 63
 			
-#line 60
+#line 63
 		type nscd_t, nscd_var_run_t;
-#line 60
+#line 63
 		class nscd { getserv getpwd getgrp gethost shmempwd shmemgrp shmemhost shmemserv };
-#line 60
+#line 63
 	
-#line 60
+#line 63
 		} # end require
-#line 60
+#line 63
 	
-#line 60
+#line 63
 
-#line 60
+#line 63
 
-#line 60
+#line 63
 	allow exim_t nscd_var_run_t:dir { getattr search open read lock ioctl };
-#line 60
+#line 63
     allow exim_t nscd_t:nscd { shmempwd shmemgrp shmemhost shmemserv };
-#line 60
+#line 63
 	# Receive fd from nscd and map the backing file with read access.
-#line 60
+#line 63
 	allow exim_t nscd_t:fd use;
-#line 60
+#line 63
 
-#line 60
+#line 63
 	# cjp: these were originally inherited from the
-#line 60
+#line 63
 	# nscd_socket_domain macro. need to investigate
-#line 60
+#line 63
 	# if they are all actually required
-#line 60
+#line 63
 	allow exim_t self:unix_stream_socket { { create { ioctl read getattr lock write setattr append bind connect getopt setopt shutdown } } listen accept };
-#line 60
+#line 63
 
-#line 60
+#line 63
 	# dg: This may not be required.
-#line 60
+#line 63
 	allow exim_t nscd_var_run_t:sock_file { getattr open read };
-#line 60
+#line 63
 
-#line 60
+#line 63
 	
-#line 60
+#line 63
 	allow exim_t nscd_var_run_t:dir { getattr search open };
-#line 60
+#line 63
 	allow exim_t nscd_var_run_t:sock_file { getattr write open append };
-#line 60
+#line 63
 	allow exim_t nscd_t:unix_stream_socket connectto;
-#line 60
+#line 63
 
-#line 60
+#line 63
 	 	 	
-#line 60
+#line 63
 ##### begin files_search_pids(exim_t) depth: 4
-#line 60
+#line 63
  	
-#line 60
+#line 63
 	
-#line 60
+#line 63
 	
-#line 60
+#line 63
 		require {
-#line 60
+#line 63
 			
-#line 60
+#line 63
 		type var_t, var_run_t;
-#line 60
+#line 63
 	
-#line 60
+#line 63
 		} # end require
-#line 60
+#line 63
 	
-#line 60
+#line 63
 
-#line 60
+#line 63
 
-#line 60
+#line 63
 	allow exim_t var_t:lnk_file { getattr read };
-#line 60
+#line 63
 	allow exim_t var_run_t:lnk_file { getattr read };
-#line 60
+#line 63
 	
-#line 60
+#line 63
 	allow exim_t var_t:dir { getattr search open };
-#line 60
+#line 63
 	allow exim_t var_run_t:dir { getattr search open };
-#line 60
+#line 63
 
-#line 60
+#line 63
 
-#line 60
+#line 63
 	 	
-#line 60
+#line 63
 ##### end files_search_pids(exim_t) depth: 3
-#line 60
+#line 63
  	
-#line 60
+#line 63
 	allow exim_t nscd_t:nscd { getpwd getgrp gethost getserv };
-#line 60
+#line 63
 	dontaudit exim_t nscd_var_run_t:file { open { getattr read ioctl lock } };
-#line 60
+#line 63
 
-#line 60
+#line 63
 	 	
-#line 60
+#line 63
 ##### end nscd_shm_use(exim_t) depth: 2
-#line 60
+#line 63
  	
-#line 60
+#line 63
 	
-#line 60
+#line 63
 	} else {
-#line 60
+#line 63
 		
-#line 60
+#line 63
 		 	 	
-#line 60
+#line 63
 ##### begin nscd_socket_use(exim_t) depth: 3
-#line 60
+#line 63
  	
-#line 60
+#line 63
 	
-#line 60
+#line 63
 	
-#line 60
+#line 63
 		require {
-#line 60
+#line 63
 			
-#line 60
+#line 63
 		type nscd_t, nscd_var_run_t;
-#line 60
+#line 63
 		class nscd { getserv getpwd getgrp gethost shmempwd shmemgrp shmemhost shmemserv };
-#line 60
+#line 63
 	
-#line 60
+#line 63
 		} # end require
-#line 60
+#line 63
 	
-#line 60
+#line 63
 
-#line 60
+#line 63
 
-#line 60
+#line 63
 	allow exim_t self:unix_stream_socket { create { ioctl read getattr lock write setattr append bind connect getopt setopt shutdown } };
-#line 60
+#line 63
 
-#line 60
+#line 63
 	allow exim_t nscd_t:nscd { getpwd getgrp gethost };
-#line 60
+#line 63
 	dontaudit exim_t nscd_t:fd use;
-#line 60
+#line 63
 	dontaudit exim_t nscd_t:nscd { getserv shmempwd shmemgrp shmemhost shmemserv };
-#line 60
+#line 63
 	 	 	
-#line 60
+#line 63
 ##### begin files_search_pids(exim_t) depth: 4
-#line 60
+#line 63
  	
-#line 60
+#line 63
 	
-#line 60
+#line 63
 	
-#line 60
+#line 63
 		require {
-#line 60
+#line 63
 			
-#line 60
+#line 63
 		type var_t, var_run_t;
-#line 60
+#line 63
 	
-#line 60
+#line 63
 		} # end require
-#line 60
+#line 63
 	
-#line 60
+#line 63
 
-#line 60
+#line 63
 
-#line 60
+#line 63
 	allow exim_t var_t:lnk_file { getattr read };
-#line 60
+#line 63
 	allow exim_t var_run_t:lnk_file { getattr read };
-#line 60
+#line 63
 	
-#line 60
+#line 63
 	allow exim_t var_t:dir { getattr search open };
-#line 60
+#line 63
 	allow exim_t var_run_t:dir { getattr search open };
-#line 60
+#line 63
 
-#line 60
+#line 63
 
-#line 60
+#line 63
 	 	
-#line 60
+#line 63
 ##### end files_search_pids(exim_t) depth: 3
-#line 60
+#line 63
  	
-#line 60
+#line 63
 	
-#line 60
+#line 63
 	allow exim_t nscd_var_run_t:dir { getattr search open };
-#line 60
+#line 63
 	allow exim_t nscd_var_run_t:sock_file { getattr write open append };
-#line 60
+#line 63
 	allow exim_t nscd_t:unix_stream_socket connectto;
-#line 60
+#line 63
 
-#line 60
+#line 63
 	dontaudit exim_t nscd_var_run_t:file { open { getattr read ioctl lock } };
-#line 60
+#line 63
 	
-#line 60
+#line 63
 	allow nscd_t exim_t:dir { getattr search open read lock ioctl };
-#line 60
+#line 63
 	allow nscd_t exim_t:file { open { getattr read ioctl lock } };
-#line 60
+#line 63
 	allow nscd_t exim_t:lnk_file { getattr read };
-#line 60
+#line 63
 	allow nscd_t exim_t:process getattr;
-#line 60
+#line 63
 
-#line 60
+#line 63
 
-#line 60
+#line 63
 	 	
-#line 60
+#line 63
 ##### end nscd_socket_use(exim_t) depth: 2
-#line 60
+#line 63
  	
-#line 60
+#line 63
 	
-#line 60
+#line 63
 	}
-#line 60
+#line 63
 
-#line 60
+#line 63
 
-#line 60
+#line 63
 	 	
-#line 60
+#line 63
 ##### end nscd_use(exim_t) depth: 1
-#line 60
+#line 63
  	
-#line 60
+#line 63
 	
-#line 60
+#line 63
 	} # end optional
-#line 60
+#line 63
 
-#line 60
+#line 63
 
-#line 60
+#line 63
 	 	
-#line 60
+#line 63
 ##### end sysnet_dns_name_resolve(exim_t) depth: 0
-#line 60
+#line 63
  	
 
 
 
-#line 63
+#line 66
 	optional {
-#line 63
+#line 66
 		
-#line 63
+#line 66
         
-#line 63
+#line 66
 	
-#line 63
+#line 66
 		require {
-#line 63
+#line 66
 			
-#line 63
+#line 66
                 type unconfined_t;
-#line 63
+#line 66
                 role unconfined_r;
-#line 63
+#line 66
         
-#line 63
+#line 66
 		} # end require
-#line 63
+#line 66
 	
-#line 63
+#line 66
 
-#line 63
+#line 66
 
-#line 63
+#line 66
          	 	
-#line 63
+#line 66
 ##### begin exim_run(unconfined_t,unconfined_r) depth: 1
-#line 63
+#line 66
  	
-#line 63
+#line 66
        
-#line 63
+#line 66
 	
-#line 63
+#line 66
 		require {
-#line 63
+#line 66
 			
-#line 63
+#line 66
                type exim_t;
-#line 63
+#line 66
        
-#line 63
+#line 66
 		} # end require
-#line 63
+#line 66
 	
-#line 63
+#line 66
 
-#line 63
+#line 66
 
-#line 63
+#line 66
         	 	
-#line 63
+#line 66
 ##### begin exim_domtrans(unconfined_t) depth: 2
-#line 63
+#line 66
  	
-#line 63
+#line 66
 	
-#line 63
+#line 66
 	
-#line 63
+#line 66
 		require {
-#line 63
+#line 66
 			
-#line 63
+#line 66
 		type exim_t, exim_exec_t;
-#line 63
+#line 66
 	
-#line 63
+#line 66
 		} # end require
-#line 63
+#line 66
 	
-#line 63
+#line 66
 
-#line 63
+#line 66
 
-#line 63
+#line 66
 	 	 	
-#line 63
+#line 66
 ##### begin corecmd_search_bin(unconfined_t) depth: 3
-#line 63
+#line 66
  	
-#line 63
+#line 66
 	
-#line 63
+#line 66
 	
-#line 63
+#line 66
 		require {
-#line 63
+#line 66
 			
-#line 63
+#line 66
 		type bin_t;
-#line 63
+#line 66
 	
-#line 63
+#line 66
 		} # end require
-#line 63
+#line 66
 	
-#line 63
+#line 66
 
-#line 63
+#line 66
 
-#line 63
+#line 66
 	 	 	
-#line 63
+#line 66
 ##### begin corecmd_read_bin_symlinks(unconfined_t) depth: 4
-#line 63
+#line 66
  	
-#line 63
+#line 66
 	
-#line 63
+#line 66
 	
-#line 63
+#line 66
 		require {
-#line 63
+#line 66
 			
-#line 63
+#line 66
 		type bin_t;
-#line 63
+#line 66
 	
-#line 63
+#line 66
 		} # end require
-#line 63
+#line 66
 	
-#line 63
+#line 66
 
-#line 63
+#line 66
 
-#line 63
+#line 66
 	
-#line 63
+#line 66
 	allow unconfined_t bin_t:dir { getattr search open };
-#line 63
+#line 66
 	allow unconfined_t bin_t:lnk_file { getattr read };
-#line 63
+#line 66
 
-#line 63
+#line 66
 
-#line 63
+#line 66
 	 	
-#line 63
+#line 66
 ##### end corecmd_read_bin_symlinks(unconfined_t) depth: 3
-#line 63
+#line 66
  	
-#line 63
+#line 66
 	
-#line 63
+#line 66
 	allow unconfined_t bin_t:dir { getattr search open };
-#line 63
+#line 66
 	allow unconfined_t bin_t:dir { getattr search open };
-#line 63
+#line 66
 
-#line 63
+#line 66
 
-#line 63
+#line 66
 	 	
-#line 63
+#line 66
 ##### end corecmd_search_bin(unconfined_t) depth: 2
-#line 63
+#line 66
  	
-#line 63
+#line 66
 	
-#line 63
+#line 66
 	
-#line 63
+#line 66
 	
-#line 63
+#line 66
 	allow unconfined_t exim_exec_t:file { getattr open read execute };
-#line 63
+#line 66
 	allow unconfined_t exim_t:process transition;
-#line 63
+#line 66
 #	dontaudit unconfined_t exim_t:process { noatsecure siginh rlimitinh };
-#line 63
+#line 66
 
-#line 63
+#line 66
 	type_transition unconfined_t exim_exec_t:process exim_t;
-#line 63
+#line 66
 
-#line 63
+#line 66
 
-#line 63
+#line 66
 	allow exim_t unconfined_t:fd use;
-#line 63
+#line 66
 	allow exim_t unconfined_t:fifo_file { getattr read write append ioctl lock };
-#line 63
+#line 66
 	allow exim_t unconfined_t:process sigchld;
-#line 63
+#line 66
 
-#line 63
+#line 66
 
-#line 63
+#line 66
 	 	
-#line 63
+#line 66
 ##### end exim_domtrans(unconfined_t) depth: 1
-#line 63
+#line 66
  	
-#line 63
+#line 66
        role unconfined_r types exim_t;
-#line 63
+#line 66
 
-#line 63
+#line 66
 	 	
-#line 63
+#line 66
 ##### end exim_run(unconfined_t,unconfined_r) depth: 0
-#line 63
+#line 66
  	
-#line 63
+#line 66
 
-#line 63
+#line 66
 	} # end optional
-#line 70
+#line 73
 
 
 

@@ -1,4 +1,4 @@
-.TH  "exim_selinux"  "8"  "14-10-20" "exim" "SELinux Policy exim"
+.TH  "exim_selinux"  "8"  "14-10-28" "exim" "SELinux Policy exim"
 .SH "NAME"
 exim_selinux \- Security Enhanced Linux Policy for the exim processes
 .SH "DESCRIPTION"
@@ -129,6 +129,25 @@ If you want to allow confined applications to run with kerberos for the exim_t, 
 .B setsebool -P kerberos_enabled 1
 .EE
 
+.SH PORT TYPES
+SELinux defines port types to represent TCP and UDP ports.
+.PP
+You can see the types associated with a port by using the following command:
+
+.B semanage port -l
+
+.PP
+Policy governs the access confined processes have to these ports.
+SELinux exim policy is very flexible allowing users to setup their exim processes in as secure a method as possible.
+.PP
+The following port types are defined for exim:
+
+.EX
+.TP 5
+.B exim_port_t
+.TP 10
+.EE
+
 .SH FILE CONTEXTS
 SELinux requires files to have an extended attribute to define the file type.
 .PP
@@ -193,6 +212,9 @@ can also be used to manipulate whether or not a process type is permissive.
 .PP
 .B semanage module
 can also be used to enable/disable/install/remove policy modules.
+
+.B semanage port
+can also be used to manipulate the port definitions
 
 .B semanage boolean
 can also be used to manipulate the booleans
