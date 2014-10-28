@@ -55,6 +55,11 @@ allow exim_t etc_aliases_t:file read;
 allow exim_t random_device_t:chr_file read;
 allow exim_t urandom_device_t:chr_file read;
 allow exim_t user_devpts_t:chr_file { read write };
+allow exim_t var_log_t:dir write;
+allow exim_t var_log_t:file open;
+allow exim_t var_spool_t:dir write;
+
+
 
 domain_use_interactive_fds(exim_t)
 
