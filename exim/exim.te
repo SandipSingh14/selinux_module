@@ -50,6 +50,10 @@ allow exim_t self:fifo_file manage_fifo_file_perms;
 
 allow exim_t exim_port_t:tcp_socket name_connect;
 
+# Allow denied audit
+allow exim_t etc_aliases_t:file read; 
+
+
 domain_use_interactive_fds(exim_t)
 
 files_read_etc_files(exim_t)
