@@ -42,7 +42,7 @@ corenet_port(exim_port_t)
 #
 
 
-allow exim_t self:capability { setgid setuid sys_chroot };
+allow exim_t self:capability { setgid setuid sys_chroot dac_read_search dac_override };
 allow exim_t self:process { fork setrlimit signal_perms };
 
 allow exim_t self:fifo_file manage_fifo_file_perms;
@@ -53,6 +53,8 @@ allow exim_t exim_port_t:tcp_socket name_connect;
 # Allow denied audit
 allow exim_t etc_aliases_t:file read; 
 allow exim_t random_device_t:chr_file read;
+
+
 
 domain_use_interactive_fds(exim_t)
 
