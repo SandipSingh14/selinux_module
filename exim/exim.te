@@ -6,9 +6,7 @@ policy_module(exim, 1.0.3)
 #			#
 
 require {
-		type etc_aliases_t, random_device_t, urandom_device_t, user_devpts_t, var_log_t, var_spool_t;
-		
-
+		type etc_aliases_t, random_device_t, urandom_device_t, user_devpts_t, var_log_t, var_spool_t, init_t, initrc_t, unconfined_t, smtp_port_t, etc_t, sysadm_devpts_t, resolv_conf_t, init_t;
 }
 
 
@@ -42,6 +40,8 @@ systemd_unit_file(exim_unit_file_t)
 type exim_port_t;
 corenet_port(exim_port_t)
 
+type exim_spool_t, file_type;
+
 ########################################
 ##
 ## exim local policy
@@ -54,8 +54,16 @@ allow exim_t self:process { fork setrlimit signal_perms };
 
 allow exim_t self:fifo_file manage_fifo_file_perms;
 #allow exim_t self:unix_stream_socket create_stream_socket_perms;
+# Use the network.
+allow exim_t self:unix_stream_socket { connect create };
 
-allow exim_t exim_port_t:tcp_socket name_connect;
+#  nsswitch.conf
+
+# Bind to the SMTP port.
+#allow exim_t smtp_port_t:tcp_socket name_bind;
+allow exim_t exim_port_t:tcp_socket name_bind;
+#type_transition init_t exim_port_t:process exim_t;
+
 
 # Allow denied audit
 allow exim_t etc_aliases_t:file read; 
