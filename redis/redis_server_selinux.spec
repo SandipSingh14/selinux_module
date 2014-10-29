@@ -70,6 +70,6 @@ exit 0
 
 
 %changelog
-* Thu Oct 16 2014 YOUR NAME <YOUR@EMAILADDRESS> 1.0-1
+* Wed Oct 29 2014 YOUR NAME <YOUR@EMAILADDRESS> 1.0-1
 - Initial version
 
