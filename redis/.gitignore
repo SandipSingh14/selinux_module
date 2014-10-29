@@ -1,0 +1,6 @@
+*.rpm
+*.8
+*.pp
+*.if
+./noarch
+./tmp
