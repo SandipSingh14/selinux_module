@@ -5,6 +5,13 @@ policy_module(exim, 1.0.3)
 #			#
 #			#
 
+require {
+		type etc_aliases_t, random_device_t, urandom_device_t, user_devpts_t, var_log_t, var_spool_t;
+		
+
+}
+
+
 # Define Role
 attribute_role	exim_roles;
 
