@@ -1,17 +1,13 @@
-policy_module(redis_server, 1.0.0)
+policy_module(redis_server, 1.0.1)
 
 ########################################
 #
 # Declarations
 #
 
-attribute_role redis_server_roles;
-roleattribute system_r redis_server_roles;
-
 type redis_server_t;
 type redis_server_exec_t;
-application_domain(redis_server_t, redis_server_exec_t)
-role redis_server_roles types redis_server_t;
+init_daemon_domain(redis_server_t, redis_server_exec_t)
 
 permissive redis_server_t;
 
@@ -32,8 +28,7 @@ systemd_unit_file(redis_server_unit_file_t)
 # redis_server local policy
 #
 allow redis_server_t self:process { fork setrlimit signal_perms };
-
-allow redis_server_t self:fifo_file manage_fifo_file_perms;
+allow redis_server_t self:fifo_file rw_fifo_file_perms;
 allow redis_server_t self:unix_stream_socket create_stream_socket_perms;
 
 manage_dirs_pattern(redis_server_t, redis_server_log_t, redis_server_log_t)
@@ -60,12 +55,3 @@ logging_send_syslog_msg(redis_server_t)
 miscfiles_read_localization(redis_server_t)
 
 sysnet_dns_name_resolve(redis_server_t)
-
-optional_policy(`
-	gen_require(`
-		type unconfined_t;
-		role unconfined_r;
-	')
-
-	redis_server_run(unconfined_t, unconfined_r)
-')
