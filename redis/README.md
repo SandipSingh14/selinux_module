@@ -64,16 +64,16 @@ semodule -l |grep redis
 
 - ``redis-server.te`` - This file can be used to define all the types rules for a particular domain.
 
-- ``redis-server_selinux.spec`` - This file is an RPM SPEC file that can be used to install the SELinux policy on to machines and setup the labeling. The spec file also  installs  the  interface  file  and  a  man  page describing the policy.
+- ``redis-server_selinux.spec`` - This file is an RPM SPEC file that can be used to install the SELinux policy on to machines and setup the labelling. The spec file also  installs  the  interface  file  and  a  man  page describing the policy.
 
-- ``redis-server.sh`` -  This is a helper shell script to compile, install and fix the labeling on your system.  It will also generate a man page based on the installed policy, and compile and build an RPM suitable to be installed on other machines.
+- ``redis-server.sh`` -  This is a helper shell script to compile, install and fix the labelling on your system.  It will also generate a man page based on the installed policy, and compile and build an RPM suitable to be installed on other machines.
 
 
 
 Contents of ``redis-server.fc``
 -------------------------------
 ```
-# Add path of the files & related 'context' as you wanted to be 'labeled' your files.
+# Add path of the files & related 'context' as you wanted to be 'labelled' your files.
 # Find redis-server path of the files by 'rpm -ql redis'
 # File Context
     - First field   'User'
@@ -87,7 +87,7 @@ Contents of ``redis-server.fc``
 /usr/lib/systemd/system/redis.service   --  gen_context(system_u:object_r:redis_server_unit_file_t,s0)
 /usr/sbin/redis-server                  --  gen_context(system_u:object_r:redis_server_exec_t,s0)
 
-# Regural expression which is mapping everything in '/var/lib/redis' with file context mention below.
+# Regular expression which is mapping everything in '/var/lib/redis' with file context mention below.
 
 /var/lib/redis(/.*)?                        gen_context(system_u:object_r:redis_server_var_lib_t,s0)
 /var/log/redis(/.*)?                        gen_context(system_u:object_r:redis_server_log_t,s0)
@@ -103,13 +103,13 @@ Contents of ``redis-server.te``
 # Add policy module 
 policy_module(redis_server, 1.0.1)
 
-### Declaritions part of module 
+### Declarations part of module 
 
 # Types
 type redis_server_t;
 type redis_server_exec_t;
 
-# Confined daemon domains use the interface init_daemon_domain which defines a transition from the initscript domain (initrc_t) to the confined domain as here 'redis_server_t' & 'redis_server_exec_t' when running an executable labeled 'redis_server_exec_t'.
+# Confined daemon domains use the interface init_daemon_domain which defines a transition from the initscript domain (initrc_t) to the confined domain as here 'redis_server_t' & 'redis_server_exec_t' when running an executable labelled 'redis_server_exec_t'.
 
 init_daemon_domain(redis_server_t, redis_server_exec_t)
 
@@ -156,33 +156,33 @@ allow redis_server_t self:fifo_file rw_fifo_file_perms;
 allow redis_server_t self:unix_stream_socket create_stream_socket_perms;
 
 # Manage types transition & create context for 'dir', 'files' and 'links'
-# This Macro says that if a process is runing as 'redis_server_t' and creates a file in a directory labeles 'redis_server_log_t', the kernel will create the file labeles 'redis_server_log_t'.
+# This Macro says that if a process is running as 'redis_server_t' and creates a file in a directory labels 'redis_server_log_t', the kernel will create the file labels 'redis_server_log_t'.
 
 manage_dirs_pattern(redis_server_t, redis_server_log_t, redis_server_log_t)
 manage_files_pattern(redis_server_t, redis_server_log_t, redis_server_log_t)
 manage_lnk_files_pattern(redis_server_t, redis_server_log_t, redis_server_log_t)
 
-# Make the specified type usable for log files in a filesystem
+# Make the specified type usable for log files in a file system
 logging_log_filetrans(redis_server_t, redis_server_log_t, { dir file lnk_file })
 
 # Manage types transition & create context for 'dir', 'files' and 'links'
-# This Macro says that if a process is runing as 'redis_server_t' and creates a file in a directory labeles 'redis_server_var_lib_t', the kernel will create the file labeles 'redis_server_var_lib_t'.
+# This Macro says that if a process is running as 'redis_server_t' and creates a file in a directory labels 'redis_server_var_lib_t', the kernel will create the file labels 'redis_server_var_lib_t'.
 
 manage_dirs_pattern(redis_server_t, redis_server_var_lib_t, redis_server_var_lib_t)
 manage_files_pattern(redis_server_t, redis_server_var_lib_t, redis_server_var_lib_t)
 manage_lnk_files_pattern(redis_server_t, redis_server_var_lib_t, redis_server_var_lib_t)
 
-# Make the specified type usable for /var/lib files in a filesystem
+# Make the specified type usable for /var/lib files in a file system
 files_var_lib_filetrans(redis_server_t, redis_server_var_lib_t, { dir file lnk_file })
 
 # Manage types transition & create context for 'dir', 'files' and 'links'
-# This Macro says that if a process is runing as 'redis_server_t' and creates a file in a directory labeles 'redis_server_var_run_t', the kernel will create the file labeles 'redis_server_var_run_t'.
+# This Macro says that if a process is running as 'redis_server_t' and creates a file in a directory labels 'redis_server_var_run_t', the kernel will create the file labels 'redis_server_var_run_t'.
 
 manage_dirs_pattern(redis_server_t, redis_server_var_run_t, redis_server_var_run_t)
 manage_files_pattern(redis_server_t, redis_server_var_run_t, redis_server_var_run_t)
 manage_lnk_files_pattern(redis_server_t, redis_server_var_run_t, redis_server_var_run_t)
 
-# Make the specified type usable for /var/run files in a filesystem
+# Make the specified type usable for /var/run files in a file system
 files_pid_filetrans(redis_server_t, redis_server_var_run_t, { dir file lnk_file })
 
 # This domain allows the tool so interact with the terminal file descriptors created at login
@@ -194,18 +194,11 @@ files_read_etc_files(redis_server_t)
 # Sending 'syslog' messages
 logging_send_syslog_msg(redis_server_t)
 
-# This macro allows 'redis_server_t' to read files/directories labeled 'public_content_t'
+# This macro allows 'redis_server_t' to read files/directories labelled 'public_content_t'
 miscfiles_read_localization(redis_server_t)
 
 # This macro allows 'redis_server_t' to connect to the dns port via 'tcp_socket'.  
 sysnet_dns_name_resolve(redis_server_t)
-
-
-
-
-
-
-
 
 ```
 
